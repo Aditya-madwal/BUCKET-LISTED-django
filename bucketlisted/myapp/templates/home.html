@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Amazon Price Tracker - Main</title>
+    {% comment %} <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> {% endcomment %}
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 50px;
+      }
+
+      .container {
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        margin-right : 200px;
+        margin-left : 200px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #218838;
+        border : 1px solid;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        width: 100px;
+        cursor: pointer;
+        border-radius: 20px;
+      }
+
+      button:hover {
+        background-color: #c82333;
+      }
+
+      a {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Amazon Price Tracker</h1>
+      <form method="post">
+        {% csrf_token %}
+        <label for="orderLink">Enter Amazon Order Link:</label>
+        <input type="text" id="orderLink" name="link" required />
+
+        <input type="submit" value="Add to Bucket List" />
+      </form>
+
+      <h2>{{request.user.username}}'s Bucket List</h2>
+      <h4><a href = "{% url "logout" %}">Logout</a></h4>
+      <ul>
+        <li>Item 1 - $99.99 <button>Delete</button></li>
+        {% for item in items %}
+        <li>{{item.name}} - <b>${{item.price}}</b> <button>Delete</button></li>
+        {% endfor %}
+        <!-- Add more items dynamically -->
+      </ul>
+
+      <a href="{% url "history" %}">View Already Ordered Items</a>
+    </div>
+  </body>
+</html>
