@@ -35,24 +35,14 @@ def get_data(urllink) :
 
     try:
         # item_data["price"]=soup.find("span",{"class":"a-price-whole"})
-        item_data['price'] = soup.find('span', {'class' : 'a-price-whole'}).string.replace(',','.')
+        item_data['price'] = soup.find('span', {'class' : 'a-price-whole'}).string.replace(',','')
         item_data['price'] = int(item_data['price'])
     except:
         item_data["price"]=None
 
-    try:
-        item_data["rating"]=soup.find("i",{"class":"a-icon-star"}).text
-    except:
-        item_data["rating"]=None
-
-
     specs = soup.find_all("tr",{"class":"a-spacing-small"})
-
-    for u in range(0,len(specs)):
-        spanTags = specs[u].find_all("span")
-        specs_obj[spanTags[0].text]=spanTags[1].text
 
     return(item_data)
 
 
-# get_data('https://www.amazon.in/YONEX-Easy22-Badminton-Shorts-India/dp/B0BTSBPPFV/ref=sl_ob_desktop_dp_0_1_v2?_encoding=UTF8&pd_rd_w=xqhs6&content-id=amzn1.sym.4f357184-dbe5-49df-beb3-916493375ee4&pf_rd_p=4f357184-dbe5-49df-beb3-916493375ee4&pf_rd_r=9EKAJ6Z2PYRT5YB698S6&pd_rd_wg=QIyZg&pd_rd_r=628ab21d-e292-46f0-bca1-17991111f9cb')
+print(get_data("https://www.amazon.in/gp/product/B0CPJG92ZS/ref=s9_bw_cg_Header_3b1_w?pf_rd_m=AT95IG9ONZD7S&pf_rd_s=merchandised-search-7&pf_rd_r=YM9FQJDGKCEE2ZTR30DK&pf_rd_t=101&pf_rd_p=4ebf4dd9-3c0a-4797-831e-0f00fc034435&pf_rd_i=1380263031"))

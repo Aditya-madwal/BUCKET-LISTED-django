@@ -1,59 +1,35 @@
 import requests
-from bs4 import BeautifulSoup
-import re
+
+def get_ASIN(pro_url) :
+    pro_url = pro_url.split('/')
+    for i in pro_url :
+        if len(i) == 10 :
+            return i
 
 
-def get_data(urllink) :
-    o={}
-    specs_arr=[]
-    specs_obj={}
+def get_product_data(urllink) :
+    url = "https://api.scrapingdog.com/amazon/product"
+    params = {
+        "api_key": "65b27ba40ff088077baa70c7",
+        "domain": "in",
+        "asin": get_ASIN(pro_url=urllink)
+    }
 
-    target_url=f"https://api.scrapingdog.com/scrape?api_key=65b27ba40ff088077baa70c7&url={urllink}"
+    response = requests.get(url, params=params)
 
+    if response.status_code == 200:
+        data = response.json()
+        # print(data)
+        item_name = data['title']
+        item_price = int(data['price'].replace(',','')[1:])
+        item_image_src = data['images'][0]
 
+        return {'name':item_name,'price':item_price,'img_src':item_image_src}
 
-    resp = requests.get(target_url)
-    # print(resp.status_code)
-    if(resp.status_code != 200):
-        print(resp)
-    soup=BeautifulSoup(resp.text,'html.parser')
-
-
-    try:
-        o["title"]=soup.find('h1',{'id':'title'}).text.lstrip().rstrip()
-    except:
-        o["title"]=None
-
-    try:
-        o["image"]=soup.find(id='landingImage')['src']
-    except:
-        o["image"]=None
-
-
-    # images = re.findall('"hiRes":"(.+?)"', resp.text)
-    # o["images"]=images
-
-    try:
-        # o["price"]=soup.find("span",{"class":"a-price-whole"})
-        o['price'] = soup.find('span', {'class' : 'a-price-whole'}).string
-    except:
-        o["price"]=None
-
-    try:
-        o["rating"]=soup.find("i",{"class":"a-icon-star"}).text
-    except:
-        o["rating"]=None
-
-
-    specs = soup.find_all("tr",{"class":"a-spacing-small"})
-
-    for u in range(0,len(specs)):
-        spanTags = specs[u].find_all("span")
-        specs_obj[spanTags[0].text]=spanTags[1].text
+    else:
+        # print(f"Request failed with status code {response.status_code}")
+        return
+    return
 
 
 
-    print(o)
-
-
-get_data('https://www.amazon.in/YONEX-Easy22-Badminton-Shorts-India/dp/B0BTSBPPFV/ref=sl_ob_desktop_dp_0_1_v2?_encoding=UTF8&pd_rd_w=xqhs6&content-id=amzn1.sym.4f357184-dbe5-49df-beb3-916493375ee4&pf_rd_p=4f357184-dbe5-49df-beb3-916493375ee4&pf_rd_r=9EKAJ6Z2PYRT5YB698S6&pd_rd_wg=QIyZg&pd_rd_r=628ab21d-e292-46f0-bca1-17991111f9cb')

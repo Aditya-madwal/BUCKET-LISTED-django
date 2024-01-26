@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <title>Amazon Price Tracker - Ordered Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -13,86 +14,100 @@
         padding: 50px;
       }
 
+      button{
+        padding : 20px;
+      }
+
       .container {
-        text-align: center;
-        background-color: #fff;
+        width: 90%;
+        margin: 0 auto;
         padding: 20px;
-        border-radius: 8px;
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-      }
-
-      form {
+    }
+    
+    h1 {
+        font-size: 24px;
+        text-align: center;
         margin-bottom: 20px;
-      }
-
-      input {
-        width: 100%;
+    }
+    
+    form {
+        text-align: center;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    input[type="text"] {
+        width: 50%;
         padding: 10px;
-        margin: 8px 0;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
         box-sizing: border-box;
-      }
-
-      input[type="submit"] {
-        background-color: #28a745;
-        color: #fff;
+    }
+    
+    input[type="submit"] {
         padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #218838;
-      }
-
-      ul {
-        list-style-type: none;
-        padding: 0;
-      }
-
-      li {
+        transition: background-color 0.3s ease;
+    }
+    
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    
+    h2 {
+        font-size: 20px;
+        margin-top: 30px;
         margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      button {
-        background-color: #dc3545;
-        color: #fff;
-        border: none;
-        padding: 8px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #c82333;
-      }
-
-      a {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
+    }
+    
+    h4 {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+    
+    a {
         color: #007bff;
         text-decoration: none;
-      }
-
-      h1,
-      h2 {
-        color: #333;
-      }
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Ordered Items</h1>
-      <ul>
-        <li>Item 1 - $89.99</li>
-        <li>Item 2 - $39.99</li>
-        <!-- Add more ordered items dynamically -->
-      </ul>
+      
+      <div style = "display:flex;flex-wrap:wrap;justify-content:center">
+        {% comment %} {% if messages %}
+        <div class="alert alert-info" role="alert">
+          This section is empty.
+        </div>
+      {% endif %} {% endcomment %}
+
+        {% for item in items %}
+        <div class="card" style="width: 18rem;margin:20px;padding:10px">
+          <img src="{{item.imgsrc}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{item.name}}</h5>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
 
       <a href="{% url "home" %}">Go Back to Main Page</a>
     </div>
