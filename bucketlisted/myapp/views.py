@@ -117,7 +117,6 @@ def orderedview(request, user, itemid) :
 @login_required(login_url = loginview)
 def deleteview(request, user, itemid) :
     if item.objects.get(id = itemid).shopper == request.user :
-        # jain win request
         item_data = item.objects.get(id = itemid)
 
         if request.method == "POST" :
@@ -125,7 +124,4 @@ def deleteview(request, user, itemid) :
             return redirect(homeview)
         return render(request, 'delete.html', {'item':item_data})
     else :
-        # golmaal hai sab golmaal hai
-        print("backchodi mat kr")
-
         return redirect(homeview)
